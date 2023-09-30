@@ -4,11 +4,9 @@ import feed from "./subcommands/feed";
 import podcasts from "./subcommands/podcasts";
 import { PathLike } from "fs";
 
-const app = (topLevelPath: PathLike) => {
-  const initCommand = init(topLevelPath);
-  return subcommands({
+const app = (topLevelPath: PathLike) =>
+  subcommands({
     name: "commands",
-    cmds: { init: initCommand, feed, podcasts },
+    cmds: { init: init(topLevelPath), feed: feed(topLevelPath), podcasts },
   });
-};
 export default app;

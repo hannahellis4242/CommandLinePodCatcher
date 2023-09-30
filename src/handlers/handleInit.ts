@@ -1,6 +1,7 @@
 import { PathLike } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
+import checkInit from "../utils/checkInit";
 
 const feedFilename = "feeds.json";
 const podcastsDirname = "casts";
@@ -22,15 +23,16 @@ const setup = async (path: PathLike) => {
   }
 };
 
-const handleInit = (path: PathLike) =>
-  readFile(join(path.toString(), feedFilename))
-    .then(() => console.log("Current directory is currently initilised. 😁"))
-    .catch(async () => {
-      console.log(
-        `Setting up directory ${path}, please wait while I create the required data. ⌛`
-      );
-      await setup(path);
-      console.log("Done setting up. You're already to go. 💯");
-    });
+const handleInit = async (path: PathLike) => {
+  if (await checkInit(path)) {
+    console.log("Current directory is currently initilised. 😁");
+    return;
+  }
+  console.log(
+    `Setting up directory ${path}, please wait while I create the required data. ⌛`
+  );
+  await setup(path);
+  console.log("Done setting up. You're already to go. 💯");
+};
 
 export default handleInit;
