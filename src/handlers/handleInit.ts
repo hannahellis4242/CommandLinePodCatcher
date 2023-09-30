@@ -1,23 +1,35 @@
-import { readFile, writeFile } from "fs/promises";
+import { PathLike } from "fs";
+import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
 
 const feedFilename = "feeds.json";
+const podcastsDirname = "casts";
 
-const setupFeedFile = () => {
-  const data = { date: Date.now().toString(), feeds: [] };
-  return writeFile(join(__dirname, feedFilename), JSON.stringify(data));
+const setupFeedFile = (path: PathLike) => {
+  const data = { time: Date.now().toString(), feeds: [] };
+  return writeFile(join(path.toString(), feedFilename), JSON.stringify(data));
 };
 
-const setup = async () => setupFeedFile();
+const setupPodcastsDir = (path: PathLike) =>
+  mkdir(join(path.toString(), podcastsDirname));
 
-const handleInit = () =>
-  readFile(join(__dirname, feedFilename))
+const setup = async (path: PathLike) => {
+  try {
+    await setupFeedFile(path);
+    await setupPodcastsDir(path);
+  } catch (err) {
+    console.error("error:", err, "\nCould not initilise your feed 😟");
+  }
+};
+
+const handleInit = (path: PathLike) =>
+  readFile(join(path.toString(), feedFilename))
     .then(() => console.log("Current directory is currently initilised. 😁"))
     .catch(async () => {
       console.log(
-        "Setting up directory, please wait while I create the required data. ⌛"
+        `Setting up directory ${path}, please wait while I create the required data. ⌛`
       );
-      await setup();
+      await setup(path);
       console.log("Done setting up. You're already to go. 💯");
     });
 
