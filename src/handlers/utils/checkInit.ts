@@ -1,7 +1,7 @@
 import { PathLike } from "fs";
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { feedFilename } from "../model/Files";
+import { feedFilename } from "../../model/Files";
 
 const checkInit = async (path: PathLike) => {
   try {

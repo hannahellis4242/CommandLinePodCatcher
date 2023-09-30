@@ -1,10 +1,8 @@
 import { PathLike } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
-import checkInit from "../utils/checkInit";
-
-const feedFilename = "feeds.json";
-const podcastsDirname = "casts";
+import checkInit from "./utils/checkInit";
+import { feedFilename, feedsDirName, podcastsDirname } from "../model/Files";
 
 const setupFeedFile = (path: PathLike) => {
   const data = { time: Date.now().toString(), feeds: [] };
@@ -14,10 +12,14 @@ const setupFeedFile = (path: PathLike) => {
 const setupPodcastsDir = (path: PathLike) =>
   mkdir(join(path.toString(), podcastsDirname));
 
+const setupFeedsDir = (path: PathLike) =>
+  mkdir(join(path.toString(), feedsDirName));
+
 const setup = async (path: PathLike) => {
   try {
     await setupFeedFile(path);
     await setupPodcastsDir(path);
+    await setupFeedsDir(path);
   } catch (err) {
     console.error("error:", err, "\nCould not initilise your feed 😟");
   }
