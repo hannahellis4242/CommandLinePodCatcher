@@ -12,8 +12,8 @@ const createFilename = ({ title, enclosure }: Item): string => {
   if (fileType) {
     return sanitiseFilename(title) + extension(fileType);
   }
-  return (
-    enclosure["@_url"].split("/").at(-1) || `${sanitiseFilename(title)}.temp`
+  return sanitiseFilename(
+    enclosure["@_url"].split("/").at(-1) || `${title}.temp`
   );
 };
 

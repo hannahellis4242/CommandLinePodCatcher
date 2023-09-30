@@ -6,24 +6,11 @@ const getRemoteFile = (file: string, url: string) => {
   let localFile = createWriteStream(file);
   https.get(url, (response) => {
     if (response.statusCode === 200) {
-      console.log(response.headers);
-      console.log(response.statusCode);
-      const len = parseInt(response.headers["content-length"]!, 10);
-      let cur = 0;
-      const total = len / 1048576; //1048576 - bytes in 1 Megabyte
-
-      response.on("data", (chunk) => {
-        cur += chunk.length;
-        showProgress(file, cur, len, total);
-      });
-
-      response.on("end", function () {
-        console.log("Download complete");
-      });
-
+      response.on("error", () => console.error("something has gone wrong"));
       response.pipe(localFile);
     }
     if (response.statusCode === 302) {
+      localFile.close();
       const newLocation = response.headers!.location!;
       getRemoteFile(file, newLocation);
     }

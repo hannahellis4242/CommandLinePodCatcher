@@ -19,6 +19,7 @@ const sanitiseFilename = (str: string): string =>
     .replaceAll(":", "")
     .replaceAll("\\", "")
     .replaceAll("@", "")
-    .replaceAll("?", "");
+    .replaceAll("?", "")
+    .replaceAll('"', "");
 
 export default sanitiseFilename;
