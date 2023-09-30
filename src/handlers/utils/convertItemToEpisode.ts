@@ -1,17 +1,34 @@
-import { join } from "path";
+import { join, resolve } from "path";
 import Item from "../../model/RSS/Item";
 import Episode from "../../model/podcasts/Episode";
 import extension from "./extention";
 import sanitiseFilename from "./sanitiseFilename";
 
 const createFilename = ({ title, enclosure }: Item): string => {
-  return sanitiseFilename(title) + extension(enclosure["@_type"]);
+  if (!enclosure) {
+    return "unknown";
+  }
+  const fileType = enclosure["@_type"];
+  if (fileType) {
+    return sanitiseFilename(title) + extension(fileType);
+  }
+  return (
+    enclosure["@_url"].split("/").at(-1) || `${sanitiseFilename(title)}.temp`
+  );
+};
+
+const getUrl = ({ enclosure }: Item): string => {
+  if (!enclosure) {
+    return "unknown";
+  }
+  return enclosure["@_url"];
 };
 
 const convertItemToExpisode = (path: string, item: Item): Episode => ({
   title: item.title,
-  url: item.enclosure["@_url"],
-  filePath: join(path, createFilename(item)),
+  url: getUrl(item),
+  filePath: resolve(join(path, createFilename(item))),
+  valid: item.enclosure !== undefined,
 });
 
 export default convertItemToExpisode;

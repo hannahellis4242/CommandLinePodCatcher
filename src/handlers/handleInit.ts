@@ -1,16 +1,17 @@
 import { mkdir } from "fs/promises";
-import { join } from "path";
+import { join, resolve } from "path";
 import { defaultConfigFilename, podcastsDirname } from "../model/Files";
 import writeConfig from "./utils/writeConfig";
 import exists from "./utils/exitsts";
 
 const setupConfigFile = (path: string) =>
-  Promise.resolve({ path: join(path, podcastsDirname), feeds: [] }).then(
-    async (config) => {
-      await writeConfig(path, config);
-      return config;
-    }
-  );
+  Promise.resolve({
+    path: resolve(join(path, podcastsDirname)),
+    feeds: [],
+  }).then(async (config) => {
+    await writeConfig(path, config);
+    return config;
+  });
 
 const setup = async (path: string) => {
   try {

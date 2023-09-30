@@ -28,6 +28,9 @@ const handlePull = async (path: string) => {
       }
       const { episodes } = channel;
       for (const episode of episodes) {
+        if (!episode.valid) {
+          continue;
+        }
         const fileExists = await exists(episode.filePath);
         if (!fileExists) {
           await download(episode);

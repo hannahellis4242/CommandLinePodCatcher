@@ -11,18 +11,20 @@ const createChannel = async (path: string, feed: Feed): Promise<Channel> => {
     const xmlParser = new XMLParser({ ignoreAttributes: false });
     const parsed = xmlParser.parse(rawRSS);
     if (!parsed.rss) {
-      console.error("no rss feed found");
-      return Promise.reject(new Error("no rss feed found"));
+      return Promise.reject(new Error(`no rss feed found for ${feed.id}`));
     }
     const rss = RSSSchema.safeParse(parsed.rss);
     if (!rss.success) {
-      console.error("could not parse rss");
-      console.error(rss.error.issues);
-      return Promise.reject(rss.error.issues);
+      return Promise.reject(
+        `could not parse rss for ${feed.id}\n${JSON.stringify(
+          rss.error.issues,
+          null,
+          2
+        )}`
+      );
     }
     return convertRSSToChannel(path, rss.data);
   } catch (err) {
-    console.error("Error ", err);
     return Promise.reject(err);
   }
 };
