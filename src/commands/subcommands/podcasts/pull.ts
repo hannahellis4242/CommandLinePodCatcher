@@ -1,9 +1,10 @@
 import { command } from "cmd-ts";
+import handlePull from "../../../handlers/handlePull";
 
 const pull = (path: string) =>
   command({
-    name: "update",
+    name: "pull",
     args: {},
-    handler: async () => console.log("TODO"),
+    handler: () => handlePull(path),
   });
 export default pull;
