@@ -2,7 +2,7 @@
   "name": "commandlinepodcatcher",
   "version": "1.0.0",
   "description": "A command line tool to manage podcast feeds and to download podcasts for later listening",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
