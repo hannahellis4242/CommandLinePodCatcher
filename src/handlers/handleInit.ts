@@ -1,6 +1,6 @@
 import { mkdir } from "fs/promises";
 import { join } from "path";
-import { podcastsDirname } from "../model/Files";
+import { defaultConfigFilename, podcastsDirname } from "../model/Files";
 import writeConfig from "./utils/writeConfig";
 import exists from "./utils/exitsts";
 
@@ -25,7 +25,7 @@ const setup = async (path: string) => {
 
 const handleInit = async (path: string) => {
   try {
-    const itExists = await exists(path);
+    const itExists = await exists(join(path, defaultConfigFilename));
     if (itExists) {
       console.log("Current directory is currently initilised. 😁");
       return;
