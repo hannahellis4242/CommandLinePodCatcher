@@ -1,0 +1,34 @@
+{
+  "name": "commandlinepodcatcher",
+  "version": "1.0.0",
+  "description": "A command line tool to manage podcast feeds and to download podcasts for later listening",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hannahellis4242/CommandLinePodCatcher.git"
+  },
+  "keywords": [
+    "podcast",
+    "podcatcher",
+    "commandline"
+  ],
+  "author": "Hannah Ellis",
+  "bugs": {
+    "url": "https://github.com/hannahellis4242/CommandLinePodCatcher/issues"
+  },
+  "homepage": "https://github.com/hannahellis4242/CommandLinePodCatcher#readme",
+  "devDependencies": {
+    "@types/node": "^20.7.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.5.1",
+    "cmd-ts": "^0.13.0"
+  }
+}
