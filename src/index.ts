@@ -2,4 +2,4 @@
 
 import { run } from "cmd-ts";
 import app from "./commands/app";
-run(app(__dirname), process.argv.slice(2));
+run(app("."), process.argv.slice(2));
