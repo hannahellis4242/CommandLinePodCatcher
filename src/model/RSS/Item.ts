@@ -5,7 +5,10 @@ export const ItemSchema = z.object({
   description: z.string().optional(),
   link: z.string().optional(),
   pubDate: z.string().optional(),
-  enclosure: z.any(),
+  enclosure: z.object({
+    "@_url": z.string().url(),
+    "@_type": z.string(),
+  }),
 });
 
 type Item = z.infer<typeof ItemSchema>;

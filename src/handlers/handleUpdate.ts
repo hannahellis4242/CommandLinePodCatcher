@@ -1,22 +1,18 @@
-import { PathLike } from "fs";
-import readFeedsFile from "./utils/readFeedsFile";
-import Feed from "../model/Feed";
-import readFeedInfoFile from "./utils/readFeedInfoFile";
-import createFeedInfoFile from "./utils/createFeedInfoFile";
+import Config from "../model/Config";
+import createChannel from "./utils/createChannel";
+import readConfigFile from "./utils/readConfigFile";
+import writeConfig from "./utils/writeConfig";
 
-const handleFeedInfo = async (path: PathLike, feed: Feed) => {
-  const info = await readFeedInfoFile(path, feed.id);
-  if (!info) {
-    await createFeedInfoFile(path, feed);
-  }
-};
-
-const handleUpdate = async (path: PathLike) => {
-  const feeds = await readFeedsFile(path);
-  if (!feeds) {
-    console.error("Cannot read feeds file");
-    return;
-  }
-  feeds.feeds.forEach((feed) => handleFeedInfo(path, feed));
-};
+const handleUpdate = async (path: string) =>
+  readConfigFile(path).then(async (config) => {
+    const deepCopy: Config = JSON.parse(JSON.stringify(config));
+    const path = config.path;
+    const updatedFeeds = deepCopy.feeds.map(async (feed) => {
+      const newChannel = await createChannel(deepCopy.path, feed);
+      return { id: feed.id, url: feed.url, channel: newChannel };
+    });
+    const newFeeds = await Promise.all(updatedFeeds);
+    deepCopy.feeds = newFeeds;
+    writeConfig(path, deepCopy);
+  });
 export default handleUpdate;

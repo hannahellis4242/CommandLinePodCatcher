@@ -2,9 +2,8 @@ import { subcommands } from "cmd-ts";
 import init from "./subcommands/init";
 import feed from "./subcommands/feed";
 import podcasts from "./subcommands/podcasts";
-import { PathLike } from "fs";
 
-const app = (topLevelPath: PathLike) =>
+const app = (topLevelPath: string) =>
   subcommands({
     name: "commands",
     cmds: {

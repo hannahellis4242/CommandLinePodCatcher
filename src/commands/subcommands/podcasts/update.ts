@@ -1,8 +1,7 @@
 import { command } from "cmd-ts";
 import handleUpdate from "../../../handlers/handleUpdate";
-import { PathLike } from "fs";
 
-const update = (path: PathLike) =>
+const update = (path: string) =>
   command({
     name: "update",
     args: {},
