@@ -1,5 +1,9 @@
 import { subcommands } from "cmd-ts";
-import update from "./podcasts/update";
+import pull from "./podcasts/pull";
 
-const podcasts = subcommands({ name: "podcasts", cmds: { update } });
+const podcasts = (path: string) =>
+  subcommands({
+    name: "podcasts",
+    cmds: { pull: pull(path) },
+  });
 export default podcasts;

@@ -1,9 +1,8 @@
 import { command, positional } from "cmd-ts";
 import { HttpUrl } from "cmd-ts/batteries/url";
 import handleAdd from "../../../handlers/handleAdd";
-import { PathLike } from "fs";
 
-const add = (path: PathLike) =>
+const add = (path: string) =>
   command({
     name: "add",
     args: { url: positional({ type: HttpUrl, displayName: "feed url" }) },

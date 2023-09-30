@@ -1,2 +1,2 @@
-export const feedFilename = "feeds.json";
-export const podcastsDirname = "casts";
+export const defaultConfigFilename = "config.json";
+export const podcastsDirname = "podcasts";

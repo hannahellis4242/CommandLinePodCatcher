@@ -1,29 +1,28 @@
 import { PathLike } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
-import checkInit from "../utils/checkInit";
+import checkInit from "./utils/checkInit";
+import { podcastsDirname } from "../model/Files";
+import writeConfig from "./utils/writeConfig";
 
-const feedFilename = "feeds.json";
-const podcastsDirname = "casts";
+const setupConfigFile = (path: string) =>
+  Promise.resolve({ path: join(path, podcastsDirname), feeds: [] }).then(
+    async (config) => {
+      await writeConfig(path, config);
+      return config;
+    }
+  );
 
-const setupFeedFile = (path: PathLike) => {
-  const data = { time: Date.now().toString(), feeds: [] };
-  return writeFile(join(path.toString(), feedFilename), JSON.stringify(data));
-};
-
-const setupPodcastsDir = (path: PathLike) =>
-  mkdir(join(path.toString(), podcastsDirname));
-
-const setup = async (path: PathLike) => {
+const setup = async (path: string) => {
   try {
-    await setupFeedFile(path);
-    await setupPodcastsDir(path);
+    const config = await setupConfigFile(path);
+    await mkdir(config.path);
   } catch (err) {
     console.error("error:", err, "\nCould not initilise your feed 😟");
   }
 };
 
-const handleInit = async (path: PathLike) => {
+const handleInit = async (path: string) => {
   if (await checkInit(path)) {
     console.log("Current directory is currently initilised. 😁");
     return;
