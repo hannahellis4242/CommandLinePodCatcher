@@ -6,7 +6,6 @@ import writeConfig from "./utils/writeConfig";
 const handleUpdate = async (path: string) =>
   readConfigFile(path).then(async (config) => {
     const deepCopy: Config = JSON.parse(JSON.stringify(config));
-    const path = config.path;
     const updatedFeeds = deepCopy.feeds.map(async (feed) => {
       const newChannel = await createChannel(deepCopy.path, feed);
       return { id: feed.id, url: feed.url, channel: newChannel };

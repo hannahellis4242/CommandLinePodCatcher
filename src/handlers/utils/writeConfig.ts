@@ -2,17 +2,16 @@ import { defaultConfigFilename } from "../../model/Files";
 import { rename, stat, writeFile } from "fs/promises";
 import Config from "../../model/Config";
 import { join } from "path";
+import exists from "./exitsts";
 
 const writeFeedsFile = async (path: string, config: Config) => {
   try {
     const targetPath = join(path, defaultConfigFilename);
-    const exists = await stat(targetPath)
-      .then(() => true)
-      .catch(() => false);
-    if (exists) {
+    const pathExists = await exists(targetPath);
+    if (pathExists) {
       await rename(
         join(path, defaultConfigFilename),
-        join(path, `backup_${Date.now()}`)
+        join(path, `backup_${Date.now()}.json`)
       );
     }
     await writeFile(

@@ -8,7 +8,8 @@ const convertItemToExpisode = (path: string, x: Item): Episode => ({
   url: x.enclosure["@_url"],
   filePath: join(
     path,
-    x.title.replaceAll(/\s/g, "-") + extension(x.enclosure["@_type"])
+    x.title.replaceAll(/\s/g, "-").replaceAll("/", "-") +
+      extension(x.enclosure["@_type"])
   ),
 });
 
