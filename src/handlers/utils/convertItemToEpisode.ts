@@ -2,15 +2,16 @@ import { join } from "path";
 import Item from "../../model/RSS/Item";
 import Episode from "../../model/podcasts/Episode";
 import extension from "./extention";
+import sanitiseFilename from "./sanitiseFilename";
 
-const convertItemToExpisode = (path: string, x: Item): Episode => ({
-  title: x.title,
-  url: x.enclosure["@_url"],
-  filePath: join(
-    path,
-    x.title.replaceAll(/\s/g, "-").replaceAll("/", "-") +
-      extension(x.enclosure["@_type"])
-  ),
+const createFilename = ({ title, enclosure }: Item): string => {
+  return sanitiseFilename(title) + extension(enclosure["@_type"]);
+};
+
+const convertItemToExpisode = (path: string, item: Item): Episode => ({
+  title: item.title,
+  url: item.enclosure["@_url"],
+  filePath: join(path, createFilename(item)),
 });
 
 export default convertItemToExpisode;

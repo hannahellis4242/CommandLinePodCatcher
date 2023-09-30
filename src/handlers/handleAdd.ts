@@ -4,7 +4,7 @@ import readConfigFile from "./utils/readConfigFile";
 import writeFeedsFile from "./utils/writeConfig";
 import { FeedSchema } from "../model/podcasts/Feed";
 
-const handleAdd = async (path: string, url: URL) => {
+const addToConfig = async (path: string, url: URL) => {
   const config = await readConfigFile(path);
   if (!config) {
     return Promise.reject(
@@ -31,6 +31,15 @@ const handleAdd = async (path: string, url: URL) => {
     );
   }
   config.feeds.push(newFeed.data);
-  return writeFeedsFile(path, config);
+  await writeFeedsFile(path, config);
+};
+
+const handleAdd = async (path: string, url: URL) => {
+  try {
+    await addToConfig(path, url);
+  } catch (err: any) {
+    console.error(err.message);
+    process.exit(1);
+  }
 };
 export default handleAdd;
