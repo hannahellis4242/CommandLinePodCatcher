@@ -1,9 +1,9 @@
 import { command } from "cmd-ts";
-import doInit from "../../handlers/doInit";
+import handleInit from "../../handlers/handleInit";
 
 const init = command({
   name: "init",
   args: {},
-  handler: doInit,
+  handler: handleInit,
 });
 export default init;
