@@ -5,6 +5,7 @@ export const EpisodeSchema = z.object({
   url: z.string(),
   filePath: z.string(),
   valid: z.boolean(),
+  subscribe: z.boolean(),
 });
 
 type Episode = z.infer<typeof EpisodeSchema>;
