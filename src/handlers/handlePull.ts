@@ -1,6 +1,4 @@
-import axios from "axios";
 import Config from "../model/Config";
-import Episode from "../model/podcasts/Episode";
 import exists from "./utils/exitsts";
 import readConfigFile from "./utils/readConfigFile";
 import { mkdir, writeFile } from "fs/promises";
@@ -32,13 +30,14 @@ const handlePull = async (path: string) => {
       }
       const { episodes } = channel;
       for (const episode of episodes) {
-        console.log("\tpulling episode", episode.title);
+        console.log("\tchecking episode", episode.title);
         if (!episode.valid) {
           continue;
         }
         const fileExists = await exists(episode.filePath);
         if (!fileExists) {
           try {
+            console.log("\t\tpulling...");
             await download(episode);
           } catch (err: any) {
             console.error(err.message);
@@ -47,10 +46,12 @@ const handlePull = async (path: string) => {
         }
       }
     }
-    await writeFile(
-      join(path, `fails_${v4().replaceAll("-", "")}.json`),
-      JSON.stringify(fails, null, 2)
-    );
+    if (fails.length !== 0) {
+      await writeFile(
+        join(path, `fails_${v4().replaceAll("-", "")}.json`),
+        JSON.stringify(fails, null, 2)
+      );
+    }
   } catch (err) {
     console.error(err);
     process.exit(1);
