@@ -29,6 +29,7 @@ const convertItemToExpisode = (path: string, item: Item): Episode => ({
   url: getUrl(item),
   filePath: resolve(join(path, createFilename(item))),
   valid: item.enclosure !== undefined,
+  subscribe: false,
 });
 
 export default convertItemToExpisode;
