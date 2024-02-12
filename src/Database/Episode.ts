@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const EpisodeSchema = z.object({
+  id: z.string(),
+  channel: z.string(),
   title: z.string(),
-  url: z.string(),
-  filePath: z.string(),
-  valid: z.boolean(),
-  subscribe: z.boolean(),
+  url: z.string().url(),
+  added: z.date(),
 });
 
 type Episode = z.infer<typeof EpisodeSchema>;
