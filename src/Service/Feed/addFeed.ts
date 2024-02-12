@@ -3,11 +3,15 @@ import Database from "../../Database/Database";
 import Feed from "../../Database/Feed";
 
 const addFeed =
-  (url: string) =>
+  (...urls: string[]) =>
   (db: Database): Database => {
     const cpy: Database = Object.assign({}, db);
-    const feed: Feed = { id: v4(), url, added: new Date() };
-    cpy.feeds.push(feed);
+    const feeds: Feed[] = urls.map((url) => ({
+      id: v4(),
+      url,
+      added: new Date(),
+    }));
+    cpy.feeds = cpy.feeds.concat(feeds);
     cpy.updated = new Date();
     return cpy;
   };
