@@ -27,8 +27,10 @@
   },
   "homepage": "https://github.com/hannahellis4242/CommandLinePodCatcher#readme",
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.7.2",
     "@types/uuid": "^9.0.4",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
