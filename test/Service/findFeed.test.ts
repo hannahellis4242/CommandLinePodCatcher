@@ -24,28 +24,53 @@ const findFeed =
     }
     if (query.date) {
       const { from, to } = query.date;
-      return feeds.filter(({ added }) => added > from && added < to);
+      return feeds
+        .filter(({ added }) => added >= from)
+        .filter(({ added }) => added <= to);
     }
     return [];
   };
 
 describe("findFeed", () => {
   const mockedV4 = v4 as jest.MockedFunction<typeof v4>;
-  const start: Database = {
+  const db: Database = {
     updated: new Date(),
-    feeds: [],
+    feeds: [
+      { id: "id1", url: "url1", added: new Date(2020, 1, 10, 10, 57, 25, 100) },
+      { id: "id2", url: "url2", added: new Date(2021, 5, 7, 11, 48, 7, 598) },
+      { id: "id3", url: "url3", added: new Date(2023, 9, 23, 15, 12, 4, 756) },
+    ],
     channels: [],
     episodes: [],
     files: [],
   };
   test("find by id", () => {
-    const ids = ["id1", "id2", "id3"];
-    const urls = ["url1", "url2", "url3"];
-    mockedV4.mockReturnValueOnce(ids[0]);
-    mockedV4.mockReturnValueOnce(ids[1]);
-    mockedV4.mockReturnValueOnce(ids[2]);
-    const db = addFeed(...urls)(start);
-    const result = findFeed({ id: ids[1] })(db);
-    expect(result.id).toBe(ids[1]);
+    const i = Math.floor(Math.random() * db.feeds.length);
+    const targetId = db.feeds[i].id;
+    const results = findFeed({ id: targetId })(db);
+    expect(results).toHaveLength(1);
+    const [result] = results;
+    expect(result.id).toBe(targetId);
+  });
+  test("find by url", () => {
+    const i = Math.floor(Math.random() * db.feeds.length);
+    const targetURL = db.feeds[i].url;
+    const results = findFeed({ url: targetURL })(db);
+    expect(results).toHaveLength(1);
+    const [result] = results;
+    expect(result.url).toBe(targetURL);
+  });
+
+  test("find by date", () => {
+    const results = findFeed({
+      date: {
+        from: new Date(2021, 1, 1, 0, 0, 0, 0),
+        to: new Date(2021, 12, 31, 23, 59, 59, 999),
+      },
+    })(db);
+    console.log(results);
+    expect(results).toHaveLength(1);
+    const [result] = results;
+    expect(result.id).toBe(db.feeds[1].id);
   });
 });
