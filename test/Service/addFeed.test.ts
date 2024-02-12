@@ -8,16 +8,16 @@ jest.mock("uuid", () => ({
 
 describe("addFeed", () => {
   const mockedV4 = v4 as jest.MockedFunction<typeof v4>;
+  const start: Database = {
+    updated: new Date(),
+    feeds: [],
+    channels: [],
+    episodes: [],
+    files: [],
+  };
   test("empty DB", () => {
     const id = "newId";
     mockedV4.mockReturnValueOnce(id);
-    const start: Database = {
-      updated: new Date(),
-      feeds: [],
-      channels: [],
-      episodes: [],
-      files: [],
-    };
     const url = "my/test/url";
     const db = addFeed(url)(start);
     expect(mockedV4).toHaveBeenCalled();
@@ -31,13 +31,6 @@ describe("addFeed", () => {
   test("adding two entries one after the other", () => {
     const id = "newId";
     mockedV4.mockReturnValueOnce(id);
-    const start: Database = {
-      updated: new Date(),
-      feeds: [],
-      channels: [],
-      episodes: [],
-      files: [],
-    };
     const url = "my/test/url";
     const db = addFeed(url)(start);
     {
@@ -72,13 +65,6 @@ describe("addFeed", () => {
     mockedV4.mockReturnValueOnce(id2);
     const url = "my/test/url";
     const url2 = "my/new/podcast/url";
-    const start: Database = {
-      updated: new Date(),
-      feeds: [],
-      channels: [],
-      episodes: [],
-      files: [],
-    };
 
     const db = addFeed(url, url2)(start);
     {
@@ -100,13 +86,6 @@ describe("addFeed", () => {
     mockedV4.mockReturnValueOnce(id2);
     const url = "my/test/url";
     const url2 = "my/new/podcast/url";
-    const start: Database = {
-      updated: new Date(),
-      feeds: [],
-      channels: [],
-      episodes: [],
-      files: [],
-    };
 
     const db = addFeed(...[url, url2])(start);
     {
