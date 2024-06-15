@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EpisodeSchema } from "./Episode";
+import { ItemSchema } from "./Item";
 
 export const RSSSchema = z.object({
   channel: z.object({
@@ -7,7 +7,7 @@ export const RSSSchema = z.object({
     link: z.string().optional(),
     description: z.string().optional(),
     author: z.string().optional(),
-    episodes: z.array(EpisodeSchema),
+    item: z.array(ItemSchema),
   }),
 });
 
